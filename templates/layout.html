@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Satsang</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="navbar">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/">Truth Consciousness</a>
+        </div>
+        <div class="navbar-menu">
+            <a href="/">Home</a>
+            <a href="/webview">Web View</a>
+            <a href="/profiles">Manage Profiles</a>
+            <a href="/retreat">View Retreat</a>
+            <a href="/help">Help</a>
+            <a href="/logout">Log Out</a>
+        </div>
+        <div class="navbar-search">
+            <input type="text" placeholder="Search...">
+            <button type="submit">🔍</button>
+        </div>
+    </div>
+    <div class="sub-navbar">
+        <!-- <h1>Satsangs</h1> -->
+        <div class="sub-navbar-menu">
+            <button type="button" class="action-button" placeholder="Satsangs">
+            <!-- <select>
+                <option>Select (A..U)</option>
+                <option>Option 1</option>
+                <option>Option 2</option>
+                Add more options as needed
+            </select> -->
+            <input type="text" placeholder="Find Satsang" class="search-input">
+            <button type="submit" class="search-buuton">Search</button>
+        </div>
+    </div>
+
+    {% block content %}
+    {% endblock %}
+</body>
+</html>

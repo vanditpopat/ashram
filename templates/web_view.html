@@ -1,0 +1,25 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="content">
+    <!-- Table with data -->
+    <table>
+        <thead>
+            <tr>
+                <th>Sr No</th>
+                <th>Category</th>
+                <th>Link</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in data %}
+            <tr>
+                <td>{{ item.sr_no }}</td>
+                <td>{{ item.category }}</td>
+                <td><a href="{{ item.link }}">View</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
