@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title Suggestion Table</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Basic reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            color: #0275d8;
+        }
+
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+
+        #suggestions {
+            margin-top: 0;
+            padding: 0;
+            list-style: none;
+            max-height: 150px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .suggestion-item {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            cursor: pointer;
+        }
+
+        .suggestion-item:last-child {
+            border-bottom: none;
+        }
+
+        .suggestion-item:hover {
+            background-color: #f0f0f0;
+        }
+
+        #selectedSuggestions {
+            margin-top: 10px;
+            min-height: 50px;
+            line-height: 50px;
+            background-color: #eee;
+            border-radius: 4px;
+            padding-left: 10px;
+        }
+
+        .selected-item {
+            display: inline-block;
+            padding: 5px 10px;
+            background-color: #d1ecf1;
+            border: 1px solid #bee5eb;
+            margin-right: 5px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .delete-btn {
+            font-size: 14px;
+            color: #c82333;
+            cursor: pointer;
+            margin-left: 5px;
+            padding: 0 5px;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .delete-btn:hover {
+            color: #bd2130;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Invitations</h1>
+    <input type="text" id="searchInput" class="form-control" placeholder="Type here..." onkeyup="fetchSuggestions()">
+    <div id="suggestions"></div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Selected Suggestions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Birthday Party</td>
+                <td id="selectedSuggestions"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+    function fetchSuggestions() {
+        const input = document.getElementById('searchInput').value;
+        if (input.length < 1) {
+            document.getElementById('suggestions').innerHTML = '';
+            return;
+        }
+        $.getJSON('/search?query=' + input, function(data) {
+            let suggestionsHTML = '';
+            data.forEach(function(word) {
+                suggestionsHTML += '<div class="suggestion-item" onclick="selectSuggestion(\'' + word + '\')">' + word + '</div>';
+            });
+            document.getElementById('suggestions').innerHTML = suggestionsHTML;
+        });
+    }
+    
+    function selectSuggestion(word) {
+        fetch('/select', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({name: word})
+        }).then(response => {
+            if (response.ok) {
+                const searchInput = document.getElementById('searchInput');
+                const selectedContainer = document.getElementById('selectedSuggestions');
+                const newItem = document.createElement('span');
+                newItem.classList.add('selected-item');
+                newItem.textContent = word;
+                const deleteBtn = document.createElement('span');
+                deleteBtn.classList.add('delete-btn');
+                deleteBtn.innerHTML = '&times;';
+                deleteBtn.onclick = function() { deselectName(word, newItem); };
+                newItem.appendChild(deleteBtn);
+                selectedContainer.appendChild(newItem);
+                searchInput.value = '';
+                document.getElementById('suggestions').innerHTML = '';
+                fetchSuggestions(); // Refresh suggestions to reflect the change
+            }
+        }).catch(error => console.error('Error selecting name:', error));
+    }
+    
+    function deselectName(word, item) {
+        fetch('/deselect', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({name: word})
+        }).then(response => {
+            if (response.ok) {
+                item.remove(); // Remove the item from the selected container
+                fetchSuggestions(); // Refresh suggestions to potentially add it back
+            }
+        }).catch(error => console.error('Error deselecting name:', error));
+    }
+    </script>
+    
+</body>
+</html>
