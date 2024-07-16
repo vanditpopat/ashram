@@ -1,8 +1,46 @@
-from flask import Flask, flash, json, redirect, render_template, url_for, request, jsonify
+from flask import Flask, flash, json, redirect, render_template, session, url_for, request, jsonify
 from forms.login import LoginForm
 from forms.signup import SignupForm
+# from flask_mysqldb import MySQL
+# import MySQLdb.cursors
+import mysql.connector
+from mysql.connector import Error
+import re
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your_secret_key'
+
+
+# # Configuring the database URI
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://vandit:!GuruDeva~13@127.0.0.1/ashram'
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# # Initialize the database
+# db = SQLAlchemy(app)
+
+# app.config['MYSQL_HOST'] = '198.100.45.83'
+# app.config['MYSQL_USER'] = 'nilesh'
+# app.config['MYSQL_PASSWORD'] = 'GuruDeva~13'
+# app.config['MYSQL_DB'] = 'ashram'
+# app.config['MYSQL_PORT'] = 3306
+
+# mysql = MySQL(app)
+
+mysql_config = {
+    'host': '198.100.45.83',
+    'user': 'nilesh',
+    'password': 'GuruDeva~13',
+    'database': 'ashram',
+    'port': 3306
+}
+
+def get_db_connection():
+    connection = None
+    try:
+        connection = mysql.connector.connect(**mysql_config)
+    except Error as e:
+        print(f"Error: '{e}'")
+    return connection
 
 @app.route('/')
 def home():
@@ -12,20 +50,50 @@ def home():
 def login():
     form = LoginForm()
     if form.validate_on_submit():
-        # In a real app, here you'd validate the user credentials
-        flash('Login Requested for user {}, remember_me={}'.format(
-            form.username.data, form.remember_me.data))
-        return redirect(url_for('home'))
-    return render_template('login.html', title='Sign In', form=form)
+        username = form.username.data
+        password = form.password.data
+        connection = get_db_connection()
+        cursor = connection.cursor(dictionary=True)
+        cursor.execute('SELECT * FROM users WHERE username = %s AND password = %s', (username, password,))
+        account = cursor.fetchone()
+        cursor.close()
+        connection.close()
+        if account:
+            session['loggedin'] = True
+            session['id'] = account['id']
+            session['username'] = account['username']
+            return redirect(url_for('home'))
+        else:
+            flash('Incorrect username/password!')
+    return render_template('login.html', form=form)
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     form = SignupForm()
     if form.validate_on_submit():
-        # Here, you'd typically save the user to your database
-        flash('Thanks for registering, {}!'.format(form.username.data))
-        return redirect(url_for('home'))
-    return render_template('signup.html', title='Sign Up', form=form)
+        username = form.username.data
+        password = form.password.data
+        email = form.email.data
+        connection = get_db_connection()
+        cursor = connection.cursor(dictionary=True)
+        cursor.execute('SELECT * FROM users WHERE username = %s', (username,))
+        account = cursor.fetchone()
+        if account:
+            flash('Account already exists!')
+        elif not re.match(r'[^@]+@[^@]+\.[^@]+', email):
+            flash('Invalid email address!')
+        elif not re.match(r'[A-Za-z0-9]+', username):
+            flash('Username must contain only characters and numbers!')
+        elif not username or not password or not email:
+            flash('Please fill out the form!')
+        else:
+            cursor.execute('INSERT INTO users (username, password, email) VALUES (%s, %s, %s)', (username, password, email,))
+            connection.commit()
+            flash('You have successfully registered!')
+            return redirect(url_for('login'))
+        cursor.close()
+        connection.close()
+    return render_template('signup.html', form=form)
 
 @app.route('/webview')
 def webview():
