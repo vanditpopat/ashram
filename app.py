@@ -1,30 +1,12 @@
 from flask import Flask, flash, json, redirect, render_template, session, url_for, request, jsonify
 from forms.login import LoginForm
 from forms.signup import SignupForm
-# from flask_mysqldb import MySQL
-# import MySQLdb.cursors
 import mysql.connector
 from mysql.connector import Error
 import re
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your_secret_key'
-
-
-# # Configuring the database URI
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://vandit:!GuruDeva~13@127.0.0.1/ashram'
-# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-# # Initialize the database
-# db = SQLAlchemy(app)
-
-# app.config['MYSQL_HOST'] = '198.100.45.83'
-# app.config['MYSQL_USER'] = 'nilesh'
-# app.config['MYSQL_PASSWORD'] = 'GuruDeva~13'
-# app.config['MYSQL_DB'] = 'ashram'
-# app.config['MYSQL_PORT'] = 3306
-
-# mysql = MySQL(app)
 
 mysql_config = {
     'host': '198.100.45.83',
@@ -44,7 +26,10 @@ def get_db_connection():
 
 @app.route('/')
 def home():
-    return render_template('index.html')
+    if 'loggedin' in session:
+        return render_template('home_loggedin.html')
+    else:
+        return render_template('index.html')
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -118,6 +103,7 @@ def search():
         data = json.load(file)
         suggestions = [word for word in data if word.lower().startswith(query.lower())]
     return jsonify(suggestions)
+
 @app.route('/select', methods=['POST'])
 def select_name():
     name = request.json['name']

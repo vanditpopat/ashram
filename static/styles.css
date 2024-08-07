@@ -1,3 +1,28 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #fffcfccc; /* Slight gray background for better contrast */
+    display: flex;
+    flex-direction: column; /* Aligns children elements (navbar, sub-navbar, content) in a column */
+    align-items: center; /* Center children horizontally */
+}
+
+.navbar {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #003366;
+    padding: 10px 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    z-index: 1000;
+}
+
 .navbar-header .navbar-brand {
     font-size: 24px;
     color: #FFFFFF;
@@ -30,6 +55,82 @@
 
 .navbar-search button:hover {
     background: #555;
+}
+
+.centered-content {
+    text-align: center;
+    margin-top: 100px; /* Adjust margin to push content below the navbar */
+}
+
+.slideshow-container {
+    position: relative;
+    max-width: 100%;
+    margin: auto;
+    margin-top: 20px; /* Add margin to push slideshow below the content */
+    height: 500px; /* Adjust the height as needed */
+}
+
+.mySlides {
+    display: none;
+    height: 100%;
+}
+
+img {
+    vertical-align: middle;
+    width: 100%;
+    height: 100%; /* Ensures the image takes the full height of the container */
+    object-fit: cover; /* Ensures the image covers the container without distortion */
+}
+
+.fade {
+    -webkit-animation-name: fade;
+    -webkit-animation-duration: 1.5s;
+    animation-name: fade;
+    animation-duration: 1.5s;
+}
+
+@-webkit-keyframes fade {
+    from {opacity: .4} 
+    to {opacity: 1}
+}
+
+@keyframes fade {
+    from {opacity: .4} 
+    to {opacity: 1}
+}
+
+/* Next & previous buttons */
+.prev, .next {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    width: auto;
+    padding: 16px;
+    margin-top: -22px;
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    transition: 0.6s ease;
+    border-radius: 0 3px 3px 0;
+    user-select: none;
+    background-color: rgba(0, 0, 0, 0.5); /* Add background color for better visibility */
+}
+
+/* Position the "next button" to the right */
+.next {
+    right: 0;
+    border-radius: 3px 0 0 3px;
+}
+
+/* On hover, add a black background color with a little bit see-through */
+.prev:hover, .next:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.profile-photo {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
 }
 
 .form-container {
@@ -65,8 +166,6 @@ input[type="submit"]:hover {
     background-color: #003580;
 }
 
-/* Ensures that the form is centered within the page */
-
 table {
     width: 50%;
     border-collapse: collapse;
@@ -89,105 +188,4 @@ tbody tr:nth-child(odd) {
 
 tbody tr:hover {
     background-color: #e9e9e9; /* Hover effect for rows */
-}
-
-.sub-navbar-menu {
-    display: flex; /* Ensures all children are inline */
-    align-items: center; /* Align items in this div vertically in the center */
-}
-
-.sub-navbar h1 {
-    margin: 0;
-    font-size: 24px;
-}
-
-.sub-navbar-menu input[type="text"],
-.sub-navbar-menu select,
-.sub-navbar-menu button {
-    margin-left: 10px;
-    padding: 5px;
-    font-size: 16px;
-}
-
-.sub-navbar-menu button {
-    background-color: #ccc;
-    border: none;
-    cursor: pointer;
-}
-
-.sub-navbar-menu button:hover {
-    background-color: #bbb;
-}
-
-body, html {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    font-family: Arial, sans-serif;
-    background-color: #fffcfccc; /* Slight gray background for better contrast */
-    display: flex;
-    flex-direction: column; /* Aligns children elements (navbar, sub-navbar, content) in a column */
-    align-items: center; /* Center children horizontally */
-}
-
-.navbar {
-    width: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #003366;
-    padding: 10px 20px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    z-index: 1000;
-}
-
-.sub-navbar {
-    width: 50%; /* Sets the sub-navbar to occupy only 50% of the page width */
-    margin-top: 80px; /* Adjust this value to the height of your main navbar */
-    margin-bottom: 20px; /* Provides space between sub-navbar and page content */
-    padding: 10px 20px;
-    background-color: #f8f8f8;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: fixed; /* Keeps it fixed just below the navbar */
-    left: 25%; /* Centers the sub-navbar; adjust as needed */
-}
-
-.content {
-    width: 100%;
-    padding-top: 160px; /* Adjust this value so content starts below the sub-navbar */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.search-bar {
-    display: flex;
-    align-items: center; /* Ensures the elements are aligned vertically in the center */
-    width: 50%; /* Adjust this as necessary to fit the content width */
-}
-
-.action-button, .search-button {
-    padding: 5px 10px;
-    background-color: #ccc;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    margin-right: 10px; /* Adds space between the button and the input field */
-}
-
-.action-button:hover, .search-button:hover {
-    background-color: #bbb; /* Darker on hover */
-}
-
-.search-input {
-    flex-grow: 1; /* Allows the input field to expand to fill the space */
-    padding: 5px 10px;
-    margin-right: 10px; /* Adds space between the input field and the search button */
-    border: 1px solid #ccc; /* Adds a border to the input field */
 }

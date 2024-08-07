@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Satsang</title>
+    <title>Truth Consciousness</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
@@ -13,29 +13,21 @@
         </div>
         <div class="navbar-menu">
             <a href="/">Home</a>
-            <a href="/webview">Web View</a>
+            <a href="/email">Web View</a>
             <a href="/profiles">Manage Profiles</a>
             <a href="/retreat">View Retreat</a>
             <a href="/help">Help</a>
-            <a href="/logout">Log Out</a>
+            {% if 'loggedin' in session %}
+                <a href="/logout">Log Out</a>
+                <img src="{{ url_for('static', filename='profile_photo.jpg') }}" alt="Profile Photo" class="profile-photo">
+            {% else %}
+                <a href="/login">Login</a>
+                <a href="/signup">Signup</a>
+            {% endif %}
         </div>
         <div class="navbar-search">
             <input type="text" placeholder="Search...">
             <button type="submit">🔍</button>
-        </div>
-    </div>
-    <div class="sub-navbar">
-        <!-- <h1>Satsangs</h1> -->
-        <div class="sub-navbar-menu">
-            <button type="button" class="action-button" placeholder="Satsangs">
-            <!-- <select>
-                <option>Select (A..U)</option>
-                <option>Option 1</option>
-                <option>Option 2</option>
-                Add more options as needed
-            </select> -->
-            <input type="text" placeholder="Find Satsang" class="search-input">
-            <button type="submit" class="search-buuton">Search</button>
         </div>
     </div>
 

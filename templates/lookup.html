@@ -1,104 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title Suggestion Table</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        /* Basic reset */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+{% extends 'layout.html' %}
 
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            padding: 20px;
-            color: #333;
-        }
-
-        .container {
-            width: 80%;
-            margin: 0 auto;
-            background: white;
-            padding: 20px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
-        }
-
-        h1 {
-            color: #0275d8;
-        }
-
-        input[type="text"], textarea {
-            width: 100%;
-            padding: 8px;
-            font-size: 16px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            margin-bottom: 10px;
-        }
-
-        #suggestions {
-            margin-top: 0;
-            padding: 0;
-            list-style: none;
-            max-height: 150px;
-            overflow-y: auto;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-
-        .suggestion-item {
-            padding: 10px;
-            border-bottom: 1px solid #ddd;
-            cursor: pointer;
-        }
-
-        .suggestion-item:last-child {
-            border-bottom: none;
-        }
-
-        .suggestion-item:hover {
-            background-color: #f0f0f0;
-        }
-
-        #selectedSuggestions {
-            margin-top: 10px;
-            min-height: 50px;
-            line-height: 50px;
-            background-color: #eee;
-            border-radius: 4px;
-            padding-left: 10px;
-        }
-
-        .selected-item {
-            display: inline-block;
-            padding: 5px 10px;
-            background-color: #d1ecf1;
-            border: 1px solid #bee5eb;
-            margin-right: 5px;
-            border-radius: 4px;
-            font-size: 14px;
-        }
-
-        .delete-btn {
-            font-size: 14px;
-            color: #c82333;
-            cursor: pointer;
-            margin-left: 5px;
-            padding: 0 5px;
-            display: inline-block;
-            vertical-align: middle;
-        }
-
-        .delete-btn:hover {
-            color: #bd2130;
-        }
-    </style>
-</head>
-<body>
+{% block content %}
 <div class="container">
     <h1>Invitations</h1>
     <input type="text" id="searchInput" class="form-control" placeholder="Type here..." onkeyup="fetchSuggestions()">
@@ -134,7 +36,7 @@
             document.getElementById('suggestions').innerHTML = suggestionsHTML;
         });
     }
-    
+
     function selectSuggestion(word) {
         fetch('/select', {
             method: 'POST',
@@ -159,7 +61,7 @@
             }
         }).catch(error => console.error('Error selecting name:', error));
     }
-    
+
     function deselectName(word, item) {
         fetch('/deselect', {
             method: 'POST',
@@ -172,7 +74,6 @@
             }
         }).catch(error => console.error('Error deselecting name:', error));
     }
-    </script>
-    
-</body>
-</html>
+</script>
+{% endblock %}
+ 

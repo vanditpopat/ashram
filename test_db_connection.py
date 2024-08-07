@@ -4,7 +4,7 @@ from mysql.connector import Error
 mysql_config = {
     'host': '198.100.45.83',
     'user': 'nilesh',
-    'password': 'GuruDeva~13',
+    'password': '!GuruDeva~13',
     'database': 'ashram',
     'port': 3306
 }
