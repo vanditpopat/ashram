@@ -1,0 +1,33 @@
+version: '3'
+services:
+  web:
+    build: .
+    ports:
+      - "5000:5000"
+    environment:
+      FLASK_ENV: development
+      MYSQL_HOST: 198.100.45.83  # Remote MySQL IP Address
+      MYSQL_DATABASE: ashram      # Database Name
+      MYSQL_USER: nilesh          # MySQL User
+      MYSQL_PASSWORD: '!GuruDeva~13'  # MySQL Password
+      MYSQL_PORT: 3306            # MySQL Port
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+
+  # Optional: A local MySQL service, in case you want to run the MySQL locally instead of using a remote database
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: ashram
+      MYSQL_USER: nilesh
+      MYSQL_PASSWORD: '!GuruDeva~13'
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
