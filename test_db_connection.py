@@ -2,10 +2,10 @@ import mysql.connector
 from mysql.connector import Error
 
 mysql_config = {
-    'host': '198.100.45.83',
-    'user': 'nilesh',
-    'password': '!GuruDeva~13',
-    'database': 'ashram',
+    'host': 'localhost',
+    'user': 'root',
+    'password': 'root',
+    'database': 'ashram_local',
     'port': 3306
 }
 
