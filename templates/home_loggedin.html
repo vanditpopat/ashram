@@ -1,0 +1,38 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="slideshow-container">
+    <div class="mySlides fade">
+        <img src="https://psy1.psych.arizona.edu/~jforster/images/__057%20slide.jpg" style="width:100%">
+    </div>
+    <div class="mySlides fade">
+        <img src="https://light-of-consciousness.org/wp-content/uploads/2021/05/Gardenscx.jpg" style="width:100%">
+    </div>
+    <div class="mySlides fade">
+        <img src="https://truthconsciousness.org/wp-content/uploads/2015/03/Ladakhi-girls.jpg" style="width:100%">
+    </div>
+</div>
+
+<div class="centered-content">
+    <h1>Welcome to The Truth Consciousness Ashram, {{username}}</h1>
+    <p>Founded by Swami Amar Jyoti in 1974</p>
+    <p>A place to listen to all pravachans and dive into divinity</p>
+</div>
+
+<script>
+    let slideIndex = 0;
+    showSlides();
+
+    function showSlides() {
+        let i;
+        let slides = document.getElementsByClassName("mySlides");
+        for (i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";  
+        }
+        slideIndex++;
+        if (slideIndex > slides.length) {slideIndex = 1}    
+        slides[slideIndex-1].style.display = "block";  
+        setTimeout(showSlides, 3000); // Change image every 3 seconds
+    }
+</script>
+{% endblock %}

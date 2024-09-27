@@ -4,15 +4,18 @@ from forms.signup import SignupForm
 import mysql.connector
 from mysql.connector import Error
 import re
+from flask_bcrypt import Bcrypt
+
+bcrypt = Bcrypt()
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your_secret_key'
 
 mysql_config = {
-    'host': '198.100.45.83',
-    'user': 'nilesh',
-    'password': 'GuruDeva~13',
-    'database': 'ashram',
+    'host': 'localhost',
+    'user': 'root',
+    'password': 'root',
+    'database': 'ashram_local',
     'port': 3306
 }
 
@@ -27,7 +30,7 @@ def get_db_connection():
 @app.route('/')
 def home():
     if 'loggedin' in session:
-        return render_template('home_loggedin.html')
+        return render_template('home_loggedin.html', username=session['username'])
     else:
         return render_template('index.html')
 
@@ -39,11 +42,12 @@ def login():
         password = form.password.data
         connection = get_db_connection()
         cursor = connection.cursor(dictionary=True)
-        cursor.execute('SELECT * FROM users WHERE username = %s AND password = %s', (username, password,))
+        cursor.execute('SELECT * FROM users WHERE username = %s', (username,))
         account = cursor.fetchone()
         cursor.close()
         connection.close()
-        if account:
+        
+        if account and bcrypt.check_password_hash(account['password'], password):
             session['loggedin'] = True
             session['id'] = account['id']
             session['username'] = account['username']
@@ -56,38 +60,35 @@ def login():
 def signup():
     form = SignupForm()
     if form.validate_on_submit():
+        email = form.email.data
         username = form.username.data
         password = form.password.data
-        email = form.email.data
+        
+        hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+        # Insert into the users table
+
         connection = get_db_connection()
-        cursor = connection.cursor(dictionary=True)
-        cursor.execute('SELECT * FROM users WHERE username = %s', (username,))
-        account = cursor.fetchone()
-        if account:
-            flash('Account already exists!')
-        elif not re.match(r'[^@]+@[^@]+\.[^@]+', email):
-            flash('Invalid email address!')
-        elif not re.match(r'[A-Za-z0-9]+', username):
-            flash('Username must contain only characters and numbers!')
-        elif not username or not password or not email:
-            flash('Please fill out the form!')
-        else:
-            cursor.execute('INSERT INTO users (username, password, email) VALUES (%s, %s, %s)', (username, password, email,))
-            connection.commit()
-            flash('You have successfully registered!')
-            return redirect(url_for('login'))
-        cursor.close()
+        with connection.cursor() as cursor:
+            # Check if the username or email already exists
+            cursor.execute("SELECT * FROM users WHERE email=%s OR username=%s", (email, username))
+            existing_user = cursor.fetchone()
+            if existing_user:
+                flash('Email or Username already exists. Please choose another.', 'danger')
+            else:
+                # Insert new user into the table
+                cursor.execute("INSERT INTO users (email, username, password) VALUES (%s, %s, %s)", (email, username, hashed_password))
+                connection.commit()
+                flash('You have successfully signed up!', 'success')
+                return redirect(url_for('login'))  # Assuming you have a login route
         connection.close()
+
     return render_template('signup.html', form=form)
 
-@app.route('/webview')
-def webview():
-    data = [
-        {'sr_no': 1, 'category': 'Books', 'link': 'https://example.com/books'},
-        {'sr_no': 2, 'category': 'Articles', 'link': 'https://example.com/articles'},
-        {'sr_no': 3, 'category': 'Videos', 'link': 'https://example.com/videos'}
-    ]
-    return render_template('web_view.html', data=data)
+@app.route('/logout')
+def logout():
+    session.clear()  # Clears all session data
+    flash('You have been logged out.', 'info')
+    return redirect(url_for('home'))
 
 @app.route('/email')
 def emaillookup():
