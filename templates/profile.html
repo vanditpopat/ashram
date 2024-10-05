@@ -1,0 +1,31 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>Profile</h1>
+    
+    <div class="profile-info">
+        <p><strong>Email:</strong> {{ user.email }}</p>
+        <p><strong>Username:</strong> {{ user.username }}</p>
+    </div>
+
+    <h2>Update Your Profile</h2>
+    <form method="POST">
+        <div class="form-group">
+            <label for="username">New Username</label>
+            <input type="text" id="username" name="username" class="form-control" value="{{ user.username }}" required>
+        </div>
+        <div class="form-group">
+            <label for="password">New Password</label>
+            <input type="password" id="password" name="password" class="form-control" placeholder="Leave blank if you don't want to change it">
+        </div>
+        <button type="submit" class="btn btn-primary">Update Profile</button>
+    </form>
+
+    {% if get_flashed_messages() %}
+        <div class="alert alert-success">
+            {{ get_flashed_messages()[0] }}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

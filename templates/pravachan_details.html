@@ -1,0 +1,125 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<h2>Edit Pravachan Details</h2>
+
+<!-- Start of form for editing the pravachan details -->
+<form method="POST" action="">
+    <table>
+        <tr>
+            <td><strong>Index:</strong></td>
+            <td><input type="text" name="index" value="{{ pravachan.id }}"></td>
+        </tr>
+        <tr>
+            <td><strong>Index Name:</strong></td>
+            <td><input type="text" name="indexNm" value="{{ pravachan.indexNm }}"></td>
+        </tr>
+        <tr>
+            <td><strong>Title:</strong></td>
+            <td><input type="text" name="title" value="{{ pravachan.title }}"></td>
+        </tr>
+        <tr>
+            <td><strong>Featured:</strong></td>
+            <td><input type="text" name="featured" value="{{ pravachan.featured }}"></td>
+        </tr>
+        <tr>
+            <td><strong>Web Category:</strong></td>
+            <td><input type="text" name="webCtgry" value="{{ pravachan.webCtgry }}"></td>
+        </tr>
+        <tr>
+            <td><strong>Web Sequence:</strong></td>
+            <td><input type="text" name="webSeq" value="{{ pravachan.webSeq }}"></td>
+        </tr>
+        <tr>
+            <td><strong>Description:</strong></td>
+            <td><textarea name="description">{{ pravachan.description }}</textarea></td>
+        </tr>
+        <tr>
+            <td><strong>Date:</strong></td>
+            <td><input type="text" name="date" value="{{ pravachan.date }}"></td>
+        </tr>
+        <tr>
+            <td><strong>Hour:</strong></td>
+            <td><input type="text" name="hour" value="{{ pravachan.hour }}"></td>
+        </tr>
+        <tr>
+            <td><strong>Venue:</strong></td>
+            <td><input type="text" name="venue" value="{{ pravachan.venue }}"></td>
+        </tr>
+        <tr>
+            <td><strong>Holy Day:</strong></td>
+            <td><input type="text" name="holyDay" value="{{ pravachan.holyDay }}"></td>
+        </tr>
+        <tr>
+            <td><strong>Special Occasion:</strong></td>
+            <td><input type="text" name="splOccasion" value="{{ pravachan.splOccasion }}"></td>
+        </tr>
+        <tr>
+            <td><strong>Retreat:</strong></td>
+            <td><input type="text" name="retreat" value="{{ pravachan.retreat }}"></td>
+        </tr>
+        <tr>
+            <td><strong>Retreat Title:</strong></td>
+            <td><input type="text" name="retreatTitl" value="{{ pravachan.retreatTitl }}"></td>
+        </tr>
+        <tr>
+            <td><strong>Part of Series:</strong></td>
+            <td><input type="text" name="k_of_n" value="{{ pravachan.k_of_n }}"></td>
+        </tr>
+        <tr>
+            <td><strong>Overview:</strong></td>
+            <td><textarea name="overview">{{ pravachan.overView }}</textarea></td>
+        </tr>
+        <tr>
+            <td><strong>Total Time:</strong></td>
+            <td><input type="text" name="totalTime" value="{{ pravachan.totalTime }}"></td>
+        </tr>
+        <tr>
+            <td><strong>On Web for Sale:</strong></td>
+            <td><input type="text" name="onWebForSale" value="{{ pravachan.onWebForSale }}"></td>
+        </tr>
+        <tr>
+            <td><strong>Cover Image:</strong></td>
+            <td><input type="text" name="coverImg" value="{{ pravachan.coverImg }}"></td>
+        </tr>
+        <tr>
+            <td><strong>Audio A:</strong></td>
+            <td><input type="text" name="audio_A" value="{{ pravachan.audio_A }}"></td>
+        </tr>
+        <tr>
+            <td><strong>Audio B:</strong></td>
+            <td><input type="text" name="audio_B" value="{{ pravachan.audio_B }}"></td>
+        </tr>
+        <tr>
+            <td><strong>MP3 Link:</strong></td>
+            <td><input type="text" name="mp3Link" value="{{ pravachan.mp3Link }}"></td>
+        </tr>
+        <tr>
+            <td><strong>Audio Quality:</strong></td>
+            <td><input type="text" name="audioQlty" value="{{ pravachan.audioQlty }}"></td>
+        </tr>
+        <tr>
+            <td><strong>Audio Comments:</strong></td>
+            <td><textarea name="audioComments">{{ pravachan.audioComments }}</textarea></td>
+        </tr>
+        <tr>
+            <td><strong>Digital Data:</strong></td>
+            <td><input type="text" name="digitalData" value="{{ pravachan.digitalData }}"></td>
+        </tr>
+        <tr>
+            <td><strong>Creation Date:</strong></td>
+            <td><input type="text" name="creation_date" value="{{ pravachan.creation_date }}"></td>
+        </tr>
+        <tr>
+            <td><strong>Last Updated By:</strong></td>
+            <td><input type="text" name="last_updated_by" value="{{ pravachan.last_updated_by }}"></td>
+        </tr>
+        <tr>
+            <td><strong>Last Update Date:</strong></td>
+            <td><input type="text" name="last_update_date" value="{{ pravachan.last_update_date }}"></td>
+        </tr>
+    </table>
+    <!-- Submit button to update the pravachan -->
+    <input type="submit" value="Update Pravachan">
+</form>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<h2>Categories and Pravachans Count</h2>
+
+<div class="table-container">
+    <!-- First column -->
+    <div class="table-column">
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Web Category</th>
+                    <th>Count</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for category in categories[0:categories|length//2] %}
+                <tr>
+                    <td>{{ category.id }}</td>
+                    <td><a href="{{ url_for('category_page', category_id=category.id) }}" class="category-link">{{ category.category }}</a></td>
+                    <td>{{ category.count }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Second column -->
+    <div class="table-column">
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Web Category</th>
+                    <th>Count</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for category in categories[categories|length//2:] %}
+                <tr>
+                    <td>{{ category.id }}</td>
+                    <td><a href="{{ url_for('category_page', category_id=category.id) }}" class="category-link">{{ category.category }}</a></td>
+                    <td>{{ category.count }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

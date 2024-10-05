@@ -1,0 +1,24 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<h2>Pravachans in Category</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Pravachan ID</th>
+            <th>Title</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for pravachan in pravachans %}
+        <tr>
+            <td>{{ loop.index }}</td> <!-- Serial number using loop.index -->
+            <td><a href="{{ url_for('pravachan_page', pravachan_id=pravachan.id) }}" class="category-link">{{ pravachan.id }}</a></td> <!-- ID is clickable -->
+            <td>{{ pravachan.title }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
