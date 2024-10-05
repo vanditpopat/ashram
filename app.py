@@ -90,6 +90,120 @@ def logout():
     flash('You have been logged out.', 'info')
     return redirect(url_for('home'))
 
+@app.route('/profile', methods=['GET', 'POST'])
+def profile():
+    if 'loggedin' not in session:
+        return redirect(url_for('login'))
+
+    connection = get_db_connection()
+    cursor = connection.cursor(dictionary=True)
+
+    # Fetch the current user's information from the database
+    cursor.execute('SELECT email, username FROM users WHERE id = %s', (session['id'],))
+    user_info = cursor.fetchone()
+
+    # Handle the POST request to update the user's info
+    if request.method == 'POST':
+        new_username = request.form['username']
+        new_password = request.form['password']
+
+        if new_username:
+            cursor.execute('UPDATE users SET username = %s WHERE id = %s', (new_username, session['id']))
+        
+        if new_password:
+            hashed_password = bcrypt.generate_password_hash(new_password).decode('utf-8')
+            cursor.execute('UPDATE users SET password = %s WHERE id = %s', (hashed_password, session['id']))
+
+        connection.commit()
+        flash('Your profile has been updated!', 'success')
+
+    cursor.close()
+    connection.close()
+
+    return render_template('profile.html', user=user_info)
+
+@app.route('/webview')
+def show_categories():
+    if 'loggedin' not in session:
+        flash('Please log in to view the categories.', 'warning')
+        return redirect(url_for('login'))
+    
+    connection = get_db_connection()
+    cursor = connection.cursor(dictionary=True)
+
+    query = """
+        SELECT wc.id, wc.categoryname AS category, COUNT(p.webcatid) AS count
+        FROM WebCategories wc
+        LEFT JOIN Pravachans p ON wc.id = p.webcatid
+        GROUP BY wc.id, wc.categoryname
+        ORDER BY wc.id
+    """
+    
+    cursor.execute(query)
+    results = cursor.fetchall()
+    
+    cursor.close()
+    connection.close()
+
+    return render_template('categories.html', categories=results)
+
+@app.route('/category/<category_id>')
+def category_page(category_id):
+    connection = get_db_connection()
+    cursor = connection.cursor(dictionary=True)
+
+    query = """
+        SELECT id, title FROM Pravachans WHERE webcatid = %s
+    """
+    cursor.execute(query, (category_id,))
+    pravachans = cursor.fetchall()
+
+    cursor.close()
+    connection.close()
+
+    return render_template('category_page.html', pravachans=pravachans)
+ 
+@app.route('/pravachan/<pravachan_id>')
+def pravachan_page(pravachan_id):
+    connection = get_db_connection()
+    cursor = connection.cursor(dictionary=True)
+
+    query = """
+        SELECT * FROM Pravachans WHERE id = %s
+    """
+    cursor.execute(query, (pravachan_id,))
+    pravachan = cursor.fetchone()
+
+    cursor.close()
+    connection.close()
+
+    return render_template('pravachan_details.html', pravachan=pravachan)
+
+@app.route('/satsangs')
+def index_counts():
+    connection = get_db_connection()
+    cursor = connection.cursor(dictionary=True)
+
+    # SQL query to get the count of each letter prefix
+    query = """
+        SELECT SUBSTRING(id, 1, 1) AS id_prefix, COUNT(*) AS count
+        FROM pravachans
+        GROUP BY id_prefix
+        ORDER BY id_prefix;
+    """
+    cursor.execute(query)
+    index_counts = cursor.fetchall()
+
+    cursor.close()
+    connection.close()
+
+    # Split the data into two columns for the table layout
+    half = len(index_counts) // 2
+    first_column_data = index_counts[:half]
+    second_column_data = index_counts[half:]
+
+    return render_template('satsang.html', first_column_data=first_column_data, second_column_data=second_column_data)
+
 @app.route('/email')
 def emaillookup():
     return render_template('lookup.html')
