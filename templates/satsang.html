@@ -14,7 +14,7 @@
             </tr>
         </thead>
         <tbody>
-            <!-- First Column Data -->
+            <!-- Combine both column data into a single column -->
             {% for data in first_column_data %}
             <tr>
                 <td>{{ loop.index }}</td> <!-- Use loop.index for numbering -->
@@ -23,23 +23,11 @@
                 <td><!-- Add theme data here if necessary --></td>
             </tr>
             {% endfor %}
-        </tbody>
-    </table>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Index</th>
-                <th>Count</th>
-                <th>Theme</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Second Column Data -->
+            
+            <!-- Second column data added in the same loop -->
             {% for data in second_column_data %}
             <tr>
-                <td>{{ loop.index }}</td> <!-- Use loop.index for numbering -->
+                <td>{{ loop.index + first_column_data|length }}</td> <!-- Adjust numbering for second set -->
                 <td>{{ data.id_prefix }}</td>
                 <td>{{ data.count }}</td>
                 <td><!-- Add theme data here if necessary --></td>
