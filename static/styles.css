@@ -8,6 +8,7 @@ body, html {
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding-top: 60px;  /* Push content below the fixed navbar */
 }
 
 /* Navbar styles */
@@ -21,7 +22,7 @@ body, html {
     align-items: center;
     background-color: #003366;
     padding: 10px 20px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     z-index: 1000;
 }
 
@@ -83,6 +84,7 @@ img {
     height: 100%;
     object-fit: cover;
 }
+
 .profile-icon {
     font-size: 20px; /* Adjust the size as needed */
     color: white;
@@ -92,7 +94,6 @@ img {
 .profile-icon:hover {
     color: #f0f0f0;
 }
-
 
 .fade {
     -webkit-animation-name: fade;
@@ -176,17 +177,63 @@ input[type="submit"]:hover {
     background-color: #003580;
 }
 
+/* Flash messages styling */
+.flash-messages {
+    position: relative;
+    z-index: 1001;
+    background-color: #fffae6;
+    padding: 15px;
+    border-radius: 5px;
+    margin: 20px 0;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 800px;
+}
+
+/* Alert types */
+.alert {
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.alert-success {
+    color: #3c763d;
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+}
+
+.alert-danger {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+}
+
+.alert-info {
+    color: #31708f;
+    background-color: #d9edf7;
+    border-color: #bce8f1;
+}
+
+.alert-warning {
+    color: #8a6d3b;
+    background-color: #fcf8e3;
+    border-color: #faebcc;
+}
+
 /* Category Table Styles - Two Columns by Default */
 .table-container {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
     margin-top: 120px;
-    width: 90%; /* Adjust width as necessary */
+    width: 90%;
 }
 
 .table-column {
-    width: 48%; /* Each column takes up nearly half of the container */
+    width: 48%; 
     margin-bottom: 20px;
 }
 
@@ -240,47 +287,10 @@ a.category-link:hover {
 /* Responsive adjustments - Switch to One Column Layout on Smaller Screens */
 @media (max-width: 768px) {
     .table-column {
-        width: 100%; /* Take full width on small screens */
+        width: 100%; 
     }
 
     table {
-        width: 100%; /* Ensure tables fit full width */
+        width: 100%; 
     }
-}
-.flash-messages {
-    margin: 20px;
-    padding: 10px;
-    text-align: center;
-}
-
-.alert {
-    padding: 10px;
-    margin-bottom: 20px;
-    border: 1px solid transparent;
-    border-radius: 5px;
-    font-weight: bold;
-}
-
-.alert-success {
-    color: #3c763d;
-    background-color: #dff0d8;
-    border-color: #d6e9c6;
-}
-
-.alert-danger {
-    color: #a94442;
-    background-color: #f2dede;
-    border-color: #ebccd1;
-}
-
-.alert-info {
-    color: #31708f;
-    background-color: #d9edf7;
-    border-color: #bce8f1;
-}
-
-.alert-warning {
-    color: #8a6d3b;
-    background-color: #fcf8e3;
-    border-color: #faebcc;
 }
