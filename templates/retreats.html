@@ -1,0 +1,37 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>View Retreats</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Retreat Title</th>
+                <th>Index</th>
+                <th>Satsang Title</th>
+                <th>Date</th>
+                <th>Hour</th>
+                <th>Venue</th>
+                <th>Brief Description</th>
+                <th>x of N</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for pravachan in pravachans %}
+            <tr>
+                <td>{{ pravachan.retreat_title }}</td>
+                <td> {{pravachan_id}}
+                    <!-- <a href="{{ url_for('pravachan_page', pravachan_id=pravachan.id) }}">{{ pravachan.id }}</a> -->
+                </td>
+                <td>{{ pravachan.pravachan_title }}</td>
+                <td>{{ pravachan.date }}</td>
+                <td>{{ pravachan.hour }}</td>
+                <td>{{ pravachan.venue_name }}, {{ pravachan.venue_city }}, {{ pravachan.venue_state }}</td> <!-- Updated venue display -->
+                <td>{{ pravachan.description }}</td>
+                <td>{{ pravachan.retreatNumber }} of {{ pravachan.retreat_total }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
