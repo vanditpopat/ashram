@@ -1,0 +1,33 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<div class="container">
+    <h2>Manage User Profiles</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>User ID</th>
+                <th>Username</th>
+                <th>Password</th>
+                <th>Role</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.username }}</td>
+                <td>********</td> <!-- Passwords are not shown directly -->
+                <td>{{ user.role }}</td>
+                <td>
+                    <!-- Actions such as editing roles -->
+                    <a href="/edit_user/{{ user.id }}" class="btn btn-primary">Edit</a>
+                    <a href="/delete_user/{{ user.id }}" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

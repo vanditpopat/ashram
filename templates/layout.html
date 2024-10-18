@@ -19,6 +19,12 @@
                 <a href="/webview">Web View</a>
                 <a href="/satsangs">Satsang</a>
                 <a href="/retreat">View Retreat</a>
+
+                <!-- Show 'Manage Profiles' only if the user is not a viewer -->
+                {% if 'viewer' not in session['roles'] %}
+                    <a href="/manageprofiles">Manage Profiles</a>
+                {% endif %}
+
                 <a href="/help">Help</a>
                 <a href="/logout">Log Out</a>
                 <a href="/profile"><i class="fas fa-user-circle profile-icon"></i></a>
@@ -33,7 +39,7 @@
         </div>
     </div>
 
-    <!-- Flash messages block (placed after the navbar but before the content) -->
+    <!-- Flash messages block -->
     <div class="container">
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
