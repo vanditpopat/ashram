@@ -20,8 +20,8 @@
             {% for pravachan in pravachans %}
             <tr>
                 <td>{{ pravachan.retreat_title }}</td>
-                <td> {{pravachan_id}}
-                    <!-- <a href="{{ url_for('pravachan_page', pravachan_id=pravachan.id) }}">{{ pravachan.id }}</a> -->
+                <td> 
+                    <a href="{{ url_for('pravachan_page', pravachan_id=pravachan.pravachan_id) }}" class="category-link">{{ pravachan.pravachan_id }}</a>
                 </td>
                 <td>{{ pravachan.pravachan_title }}</td>
                 <td>{{ pravachan.date }}</td>
